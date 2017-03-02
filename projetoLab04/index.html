@@ -1,0 +1,65 @@
+<html ng-app="listaAtividades">
+	<head>
+		
+		<title>Lista de Tarefas</title>
+		<link rel="stylesheet" type="text/css" href="bootstrap.css">
+		<script src='js/jspdf.js'></script>
+ 		<script src='js/jquery-2.1.3.js'></script>
+ 		<script src='js/pdfFromHTML.js'></script>
+		<style>
+			.jumbotron {
+				width: 400px;
+				text-align: center;
+				margin-top: 20px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.table{
+				margin-top: 20px;
+			}
+		</style>
+
+		<script src="angular.js"></script>
+		
+		<script>
+			angular.module("listaAtividades", []);
+			angular.module("listaAtividades").controller("listaAtividadesCtlr", function($scope){
+					$scope.app = "Lista De Atividades";
+					$scope.tarefas = [
+						
+					];
+					$scope.adicionarContato = function (tarefa) {
+						$scope.tarefas.push(angular.copy(tarefa));
+						delete $scope.tarefa;
+					};
+					$scope.apagarContato = function(tarefas){
+						$scope.tarefas = tarefas.filter(function (tarefa){
+							if(!tarefa.selecionado) return tarefa;
+						});
+
+					};
+				
+			});
+		</script>
+
+	</head>
+
+	<body ng-controller="listaAtividadesCtlr">
+		<div id="HTMLtoPDF">
+			<div class="jumbotron">
+				<a href="#" onclick="HTMLtoPDF()">Download PDF</a>
+				<h3>{{app}}</h3>
+				<table class="table table-striped">
+					<tr ng-class="" ng-repeat="tarefa in tarefas">
+						<td><input type="checkbox" ng-model="tarefa.selecionado"/></td>
+						<td>{{tarefa.nome}}</td>
+					</tr>
+				</table>
+				<input class="form-control" type="text" ng-model="tarefa.nome" placeholder="Tarefa"/>
+				<button class="btn btn-primary btn-block" ng-click="adicionarContato(tarefa)" ng-disabled="!tarefa.nome">Adicionar Contato</button>
+				<button class="btn btn-danger btn-block" ng-click="apagarContato(tarefas)">Apagar Contato</button>
+			</div>
+		</div>
+	</body>
+
+</html>
